@@ -1,0 +1,865 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"next",
+				"nextBracket"
+			],
+			[
+				"ne",
+				"nextBracket"
+			],
+			[
+				"nex",
+				"nextBracket"
+			],
+			[
+				"fir",
+				"firstlineTimestamp"
+			],
+			[
+				"ze",
+				"zerothLine"
+			],
+			[
+				"time",
+				"timeItWasSaid"
+			],
+			[
+				"l",
+				"lineNumber"
+			],
+			[
+				"re",
+				"restOfText"
+			],
+			[
+				"second",
+				"secondparse"
+			],
+			[
+				"res",
+				"results"
+			],
+			[
+				"f",
+				"firstparse"
+			],
+			[
+				"new",
+				"newRestOfText"
+			],
+			[
+				"timeP",
+				"timePartsOfThisLine"
+			],
+			[
+				"timeS",
+				"timeStamp"
+			],
+			[
+				"tim",
+				"timeStampEnd"
+			],
+			[
+				"ti",
+				"timeStampEnd"
+			],
+			[
+				"rest",
+				"restOfText"
+			],
+			[
+				"li",
+				"listOfLines"
+			],
+			[
+				"fin",
+				"findall"
+			],
+			[
+				"name",
+				"nameEnd"
+			],
+			[
+				"pro",
+				"probableLine"
+			],
+			[
+				"wh",
+				"whatWasSaid"
+			],
+			[
+				"if",
+				"ifmain	if __name__ == '__main__'"
+			],
+			[
+				"clea",
+				"clearall"
+			],
+			[
+				"RRT",
+				"RRTest8"
+			],
+			[
+				"clean",
+				"cleanUp"
+			],
+			[
+				"R",
+				"RRTest6"
+			],
+			[
+				"RRTe",
+				"RRTest6"
+			],
+			[
+				"pri",
+				"print"
+			],
+			[
+				"RR",
+				"RRTest5"
+			],
+			[
+				"RRTest",
+				"RRtest2"
+			],
+			[
+				"con",
+				"contactCreateAndFollow"
+			],
+			[
+				"ra",
+				"raw_input"
+			],
+			[
+				"contac",
+				"contactCreate"
+			],
+			[
+				"ad",
+				"addContactToGroup"
+			],
+			[
+				"add",
+				"addContact"
+			],
+			[
+				"cont",
+				"contactId"
+			],
+			[
+				"api",
+				"apiKey"
+			],
+			[
+				"Cont",
+				"ContactService"
+			],
+			[
+				"ap",
+				"apiKey"
+			],
+			[
+				"all",
+				"allContactsOwned"
+			],
+			[
+				"Owner",
+				"OwnerID"
+			],
+			[
+				"out",
+				"outFile"
+			],
+			[
+				"ge",
+				"getAllUsers"
+			],
+			[
+				"des",
+				"desiredInfo"
+			],
+			[
+				"tab",
+				"tableQuery"
+			],
+			[
+				"ID",
+				"ID"
+			],
+			[
+				"print",
+				"printString"
+			],
+			[
+				"de",
+				"desiredInfo"
+			],
+			[
+				"me",
+				"menuPrint"
+			],
+			[
+				"g",
+				"getAllContacts"
+			],
+			[
+				"s",
+				"sourcecode"
+			],
+			[
+				"my",
+				"myquery"
+			],
+			[
+				"date",
+				"dateadded"
+			],
+			[
+				"sc",
+				"script_dir"
+			],
+			[
+				"FI",
+				"FILE_ARRAY"
+			],
+			[
+				"FIL",
+				"FILES_IN_DIR"
+			],
+			[
+				"cm",
+				"cmake28"
+			],
+			[
+				"cm28",
+				"cm28needtoinstall"
+			],
+			[
+				"cmake",
+				"cmake28"
+			],
+			[
+				"bas",
+				"bash_profile"
+			],
+			[
+				"taskd",
+				"taskdconfig"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "python/page.py",
+			"settings":
+			{
+				"buffer_size": 6657,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "import re\np = re.compile(ur'(\\[[0-9].*)')\ntest_str = u\"Chat Transcript Channel: ChatChat 10/02/2014 05:22 AMMike Healy,\\n[05:05:20 AM] Hi, my name is Mike H. How may I help you?\\n[05:05:47 AM] Customer one: Hi Mike - how do I send to a list, but exclude some of the people in it (who are also on another list)?\\n[05:06:10 AM] Mike H: Do you have a way to identify the contacts you do not want to be included?\\n[05:06:28 AM] Customer one: yes\\n[05:07:05 AM] Mike H: Is it another tag by chance?\\n[05:07:14 AM] Customer one: yes\\n[05:07:36 AM] Customer one: do you need the details?\\n[05:09:47 AM] Mike H: Not exactly. Basically what you would do is search for the contacts you want to include then use one of the tag boxes on the contact search, set it to \\\"doesn't contain\\\" and select the tag you want to exclude. It will only give results who do NOT have the tag of the other list.\\n[05:11:16 AM] Customer one: I think I follow that...can you hold on while I try it?\\n[05:11:59 AM] Mike H: I am not sure if I can, I am slipping awaaaaaayyyyyy......\\n[05:12:03 AM] Mike H: Yes, go ahead.\\n[05:12:09 AM] Customer one: actually, I'm confused...lol\\n[05:12:16 AM] Mike H: Haha, no problem.\\n[05:12:36 AM] Mike H: What is the criteria you are wanting to use to get the list of people not excluding the group?\\n[05:14:17 AM] Customer one: I want to send to a group called blrtelesummit2014 (which may just be a search my VA saved) and exclude those tagged with 0400 purchases BLR upgrade\\n[05:17:14 AM] Mike H: Ok, so blrtelesummit2014 is a saved search?\\n[05:17:35 AM] Customer one: yes, I think so...it must be, I keep using it!\\n[05:17:49 AM] Mike H: You select it from the drop down menu in the upper right?\\n[05:18:25 AM] Customer one: I select it from broadcast recipients in the drop down on the upper left\\n[05:19:19 AM] Mike H: Ok, so you are doing this from the broadcast creator?\\n[05:19:31 AM] Customer one: ok - penny dropped! I get it....you can go and die quietly somewhere now...yes\\n[05:20:34 AM] Mike H: Haha, I wasn't dying, just slipping into the abyss of nothingness.\\n[05:20:52 AM] Mike H: Getting used to the overnight shift.\\n[05:21:00 AM] Customer one: the abyss of nothingess is enlightenment! Well done!\\n[05:21:32 AM] Mike H: Woot!\\n[05:21:41 AM] Mike H: I have a good sense of direction.\\n[05:22:03 AM] Customer one: Thanks for your help...in the words of Arnie, I'll be back\\n[05:22:21 AM] Mike H: Haha, just as long as its not in a new Conan movie, that's ok.\\n[05:22:28 AM] Customer one: Enjoy your shift...pretend you are here in the UK having lunch. Bye\\n[05:22:31 AM] 'Customer one' disconnected ('Concluded by End-user').\"\n \nre.match(p, test_str)",
+			"settings":
+			{
+				"buffer_size": 2678,
+				"line_ending": "Unix",
+				"name": "import re"
+			}
+		},
+		{
+			"contents": "txt=\"\"\"Chat Transcript Channel: ChatChat   10/02/2014 11:59 AMAgent,\n[11:42:11 AM] Hi, my name is Agent.. How may I help you?\n[11:42:15 AM] Test account: Sorry to be a pain, I really appreciate your help.\n\nI have a goat which has strings throughout it. Somehow those first few who were about to go into my under process have gone to no longer active and into historical bar one feel, despite having next steps all in ready mode. The red batch of people enter tomorrow and I really do not want them to go into historical like this.\n\nIs this a issue that you know the answer for?\n\nThe campaign is called 'freds Sign dp neck' and the issue is between the first red neck '11 free (transition) Lesson confidence' and the next neck 'split test by name'. I see on the historical they are stuck on the 'split test by name' neck and are no longer active.\n\nReally appreciate any help.\n\nawesome\n[11:45:37 AM] Agent.: ok, i am looking at the campaign now.  so you are asking why the confirmation necks show a historical number?  i am not sure i am following you exactly.\n[11:47:21 AM] Test account: thank you. I have 5 people who entered the split test part, but only one moved into the next neck, the other four went from active to no longer in there, I looked at the historical section on campaign and they are in there, but it is like they are no longer participating in the campaign having not gone into the next neck\n[11:50:16 AM] Agent.: it is because out of those 5 feels, only one of them had the A split test tag or the B split test tag.  the rest of them did not have either of those tags and your decision diamond is set to only push them to one of the next necks if they have one of those tags.\n[11:50:28 AM] Agent.:  is the only feel of those 5 that has one of those tags\n[11:52:17 AM] Test account: Hmmm not sure why they were not tagged to go down the ruled route. I must be missing something\n[11:52:23 AM] Test account: thank you!\n[11:53:04 AM] Agent.: not a problem!  Glad to help out!\n[11:53:40 AM] Test account: do you have any pointers as to why they missed the tag? Or should I just research online?\n[11:54:47 AM] Agent.: well i dont know why they dont have the tags.  when are they sdpposed to have one of those tags applied?\n[11:55:11 AM] Test account: pretty much\n[11:55:53 AM] Test account: okay. I guess I can force them through if need be until I find a solution on infusion\n[11:58:07 AM] Agent.: right, you can push them through to the next neck, but they would need to have A split test tag, or B split test tag applied to their records before they get to that point in the campaign\n[11:58:52 AM] Test account: I see. Okay, thank you..I better keep searching for a answer then\n[11:59:35 AM] Agent.: no problem!  If there is anything else we can do to help, feel free to feel s at any time!\n[11:59:43 AM] Test account: cheers\n[11:59:46 AM] 'Test account' disconnected ('Concluded by End-user').\"\"\"",
+			"settings":
+			{
+				"buffer_size": 2913,
+				"line_ending": "Unix",
+				"name": "txt=\"\"\"Chat Transcript Channel: ChatChat   10/02/2"
+			}
+		},
+		{
+			"file": "python/config.py",
+			"settings":
+			{
+				"buffer_size": 248,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "text1=\"\"\"Chat Transcript Channel: ChatChat   10/02/2014 05:22 AMAGENT,\n[05:05:20 AM] Hi, my name is AGENT. How may I help you?\n[05:05:47 AM] Customer one: Hi Mike  - how do I send to a list, but exclude some of the people in it (who are also on another list)?\n[05:06:10 AM] AGENT: Do you have a way to identify the contacts you do not want to be included?\n[05:06:28 AM] Customer one: yes\n[05:07:05 AM] AGENT: Is it another tag by chance?\n[05:07:14 AM] Customer one: yes\n[05:07:36 AM] Customer one: do you need the details?\n[05:09:47 AM] AGENT: Not exactly.  Basically what you would do is search for the contacts you want to include then use one of the tag boxes on the contact search, set it to \"doesn't contain\" and select the tag you want to exclude.  It will only give results who do NOT have the tag of the other list.\n[05:11:16 AM] Customer one: I think I follow that...can you hold on while I try it?\n[05:11:59 AM] AGENT: I am not sure if I can, I am slipping awaaaaaayyyyyy......\n[05:12:03 AM] AGENT: Yes, go ahead.\n[05:12:09 AM] Customer one: actually, I'm confused...lol\n[05:12:16 AM] AGENT: Haha, no problem.\n[05:12:36 AM] AGENT: What is the criteria you are wanting to use to get the list of people not excluding the group?\n[05:14:17 AM] Customer one: I want to send to a group called onetwo (which may just be a search my VA saved) and exclude those tagged with 0400 purchases BLR upgrade\n[05:17:14 AM] AGENT: Ok, so onetwo is a saved search?\n[05:17:35 AM] Customer one: yes, I think so...it must be, I keep using it!\n[05:17:49 AM] AGENT: You select it from the drop down menu in the upper right?\n[05:18:25 AM] Customer one: I select it from broadcast recipients in the drop down on the upper left\n[05:19:19 AM] AGENT: Ok, so you are doing this from the broadcast creator?\n[05:19:31 AM] Customer one: ok - penny dropped!  I get it....you can go and die quietly somewhere now...yes\n[05:20:34 AM] AGENT: Haha, I wasn't dying, just slipping into the abyss of nothingness.\n[05:20:52 AM] AGENT: Getting used to the overnight shift.\n[05:21:00 AM] Customer one: the abyss of nothingess is enlightenment!  Well done!\n[05:21:32 AM] AGENT: Woot!\n[05:21:41 AM] AGENT: I have a good sense of direction.\n[05:22:03 AM] Customer one: Thanks for your help...in the words of Arnie, I'll be back\n[05:22:21 AM] AGENT: Haha, just as long as its not in a new Conan movie, that's ok.\n[05:22:28 AM] Customer one: Enjoy your shift...pretend you are here in the UK having lunch.  Bye\n[05:22:31 AM] 'Customer one' disconnected ('Concluded by End-user').\"\"\"\n\n\ntext2=\"\"\"Chat Transcript Channel: ChatChat   10/02/2014 06:09 AMDaniel Greenlee,\n[06:00:44 AM] Hi, my name is Daniel G.. How may I help you?\n[06:04:32 AM] Customer two: I had a sequence email sent out last tuesday with subject line \"Stop banging your head\", it had a timer in front of it email but there were 70 different broadcast reports created.\n\n1. Why were so many different reports created?\n2. Is there any way to combine those 70 reports?\n[06:07:51 AM] Daniel G.: The system may schedule those broadcasts as contacts get added to that sequence at different times --- The system will try to batch as many together as possible, but it may send them out separately in some cases. There isn't really a way to specify how the system does this. As for combining the stats, there isn't a function that allows for aggregating those in particular --- It auto generates those \"broadcasts\" when it needs to send the email out.\n[06:09:06 AM] Customer two: Ok thanks for the insight\n[06:09:14 AM] 'Customer two' disconnected ('Concluded by End-user').\"\"\"\n\n\n\ntext3=\"\"\"Chat Transcript Channel: ChatChat   10/02/2014 06:43 AMSabrina McNally, Attachment(s) (1)\nScreenshot 2014-10-02 09.26.11.png\n\n[06:29:07 AM] Hi, my name is Sabrina M. How may I help you?\n[06:29:18 AM] Customer three: sorry i lost you for a minute\n[06:29:24 AM] Sabrina M: No worries! :)\n[06:30:23 AM] Sabrina M: Do you know if you recently changed the password on any of your accounts?\n[06:30:38 AM] Customer three: no the password has never been changed\n[06:31:15 AM] Customer three: and this is a fairly new setup but i can do all other functions and i sign on with that password\n[06:31:39 AM] Sabrina M: Hmmm... ok, give me a moment while I test this out. :)\n[06:31:45 AM] Customer three: ok\n[06:37:37 AM] Sabrina M: Ok, so there are a number of things that could be causing this error.  One of them is that the email account that Infusionsoft is pulling the emails in from may not support a certain port or may not be configured with the SSL security certificate that is being used.\n[06:38:25 AM] Customer three: ok, and how is that resolved - i will also bring it up to the owner and manager of the accounts\n[06:40:18 AM] Sabrina M: Those two would both have to be checked in the settings of the email client that is originally receiving the emails.  I do know that we do recommend that users try to move away from this POP account feature and use the Gmail and Outlook syncs as POP accounts are a Legacy feature and we will eventually be moving away from Legacy.\n[06:41:28 AM] Customer three: ok i will leave this chat up and show them that when they are available\n[06:42:05 AM] Sabrina M: I can email you the chat transcript, if you like, because the chat will close after 10 minutes of inactivity.\n[06:42:41 AM] Customer three: yes please, szaccheo@touchingclients.com\n[06:42:58 AM] Sabrina M: Sure thing! :) Was there anything else I can help you with today?\n[06:43:08 AM] Customer three: not right now thank you\n[06:43:33 AM] Sabrina M: You're very welcome! Have a great day, Shirley! :)\n[06:43:38 AM] 'Customer three' disconnected ('Concluded by Agent').\"\"\"\n\n\n",
+			"file": "python/examples.py",
+			"file_size": 5720,
+			"file_write_time": 1412404252000000,
+			"settings":
+			{
+				"buffer_size": 5677,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "    [\"Chat Transcript Channel: ChatChat   10/02/2014 05:22 AMAGENT,\",\n    \"[05:05:20 AM] Hi, my name is AGENT. How may I help you?\",\n    \"[05:05:47 AM] Customer one: Hi Mike  - how do I send to a list, but exclude some of the people in it (who are also on another list)?\",\n    \"[05:06:10 AM] AGENT: Do you have a way to identify the contacts you do not want to be included?\",\n    \"[05:06:28 AM] Customer one: yes\",\n    \"[05:07:05 AM] AGENT: Is it another tag by chance?\",\n    \"[05:07:14 AM] Customer one: yes\",\n    \"[05:07:36 AM] Customer one: do you need the details?\",\n    \"[05:09:47 AM] AGENT: Not exactly.  Basically what you would do is search for the contacts you want to include then use one of the tag boxes on the contact search, set it to \"doesn't contain\" and select the tag you want to exclude.  It will only give results who do NOT have the tag of the other list.\",\n    \"[05:11:16 AM] Customer one: I think I follow that...can you hold on while I try it?\",\n    \"[05:11:59 AM] AGENT: I am not sure if I can, I am slipping awaaaaaayyyyyy......\",\n    \"[05:12:03 AM] AGENT: Yes, go ahead.\",\n    \"[05:12:09 AM] Customer one: actually, I'm confused...lol\",\n    \"[05:12:16 AM] AGENT: Haha, no problem.\",\n    \"[05:12:36 AM] AGENT: What is the criteria you are wanting to use to get the list of people not excluding the group?\",\n    \"[05:14:17 AM] Customer one: I want to send to a group called onetwo (which may just be a search my VA saved) and exclude those tagged with 0400 purchases BLR upgrade\",\n    \"[05:17:14 AM] AGENT: Ok, so onetwo is a saved search?\",\n    \"[05:17:35 AM] Customer one: yes, I think so...it must be, I keep using it!\",\n    \"[05:17:49 AM] AGENT: You select it from the drop down menu in the upper right?\",\n    \"[05:18:25 AM] Customer one: I select it from broadcast recipients in the drop down on the upper left\",\n    \"[05:19:19 AM] AGENT: Ok, so you are doing this from the broadcast creator?\",\n    \"[05:19:31 AM] Customer one: ok - penny dropped!  I get it....you can go and die quietly somewhere now...yes\",\n    \"[05:20:34 AM] AGENT: Haha, I wasn't dying, just slipping into the abyss of nothingness.\",\n    \"[05:20:52 AM] AGENT: Getting used to the overnight shift.\",\n    \"[05:21:00 AM] Customer one: the abyss of nothingess is enlightenment!  Well done!\",\n    \"[05:21:32 AM] AGENT: Woot!\",\n    \"[05:21:41 AM] AGENT: I have a good sense of direction.\",\n    \"[05:22:03 AM] Customer one: Thanks for your help...in the words of Arnie, I'll be back\",\n    \"[05:22:21 AM] AGENT: Haha, just as long as its not in a new Conan movie, that's ok.\",\n    \"[05:22:28 AM] Customer one: Enjoy your shift...pretend you are here in the UK having lunch.  Bye\",\n    \"[05:22:31 AM] 'Customer one' disconnected ('Concluded by End-user').\"]",
+			"settings":
+			{
+				"buffer_size": 2749,
+				"line_ending": "Unix",
+				"name": "[\"Chat Transcript Channel: ChatChat   10/02/20"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 306.0,
+		"selected_items":
+		[
+			[
+				"sft",
+				"SFTP: Browse Server…"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"org",
+				"Set Syntax: orgmode"
+			],
+			[
+				"syn",
+				"Set Syntax: Markdown"
+			],
+			[
+				"orgm",
+				"Set Syntax: orgmode"
+			],
+			[
+				"gist",
+				"Gist: Create Private Gist"
+			],
+			[
+				"snippl",
+				"Snipplr: Upload a snippet"
+			],
+			[
+				"mar",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"ma",
+				"Markdown Preview: Python Markdown: Preview in Browser"
+			],
+			[
+				"mark",
+				"Markdown Preview: Open Markdown Cheat sheet"
+			],
+			[
+				"new",
+				"ANF: New File"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"op",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"com",
+				"Toggle Comment"
+			]
+		],
+		"width": 449.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/jlmarks/mycode/peerfeedback/chatPeerFeedback/python/testgrounds.py",
+		"/home/jlmarks/mycode/InfusionsoftAPIOnline/functions.php",
+		"/home/jlmarks/mycode/InfusionsoftAPIOnline/unlogged.php",
+		"/home/jlmarks/mycode/InfusionsoftAPIOnline/index.php",
+		"/home/jlmarks/.config/sublime-text-2/Packages/User/sftp_servers/jlmarks",
+		"/home/jlmarks/Downloads/port.zip",
+		"/home/jlmarks/Desktop/roundrobinTest_2014-09-03_20:37:25.csv",
+		"/home/jlmarks/Desktop/roundrobinTest_2014-09-03_19:18:43.csv",
+		"/home/jlmarks/mycode/InfusionsoftCommandLine/README.md",
+		"/home/jlmarks/mycode/InfusionsoftCommandLine/__init__.py",
+		"/home/jlmarks/Notebooks/Notes/WillingToStudy.txt",
+		"/home/jlmarks/Downloads/The Finder Season 1 Full HDTV (pedrele)/The.Finder.S01E05.The.Great.Escape.HDTV-LOL.eng.srt",
+		"/home/jlmarks/mycode/mysite/is/is1/index.html",
+		"/home/jlmarks/mycode/mysite/is/is2/index.html",
+		"/home/jlmarks/mycode/mysite/wifi/index.html",
+		"/home/jlmarks/Downloads/qrcode.22480278.png",
+		"/home/jlmarks/mycode/mynotes/techsupportnotes.txt",
+		"/home/jlmarks/mycode/mysite/portfolio/mybash/Webanize/2014-04-25:23:19:14Webanize.conf",
+		"/home/jlmarks/mycode/mybash/gdsync.sh",
+		"/home/jlmarks/mycode/mybash/webanize.tester.sh",
+		"/home/jlmarks/mycode/mybash/webanize.cleandb",
+		"/home/jlmarks/mycode/mybash/a.sh",
+		"/home/jlmarks/mycode/mybash/linux commands I use.txt",
+		"/home/jlmarks/mycode/mybash/gdget.sh",
+		"/home/jlmarks/deleteme/test.txt",
+		"/home/jlmarks/mycode/mybash/test",
+		"/home/jlmarks/hdla.txt",
+		"/home/jlmarks/mycode/mylogs/gdsync-2014-03-28-18:44:01.log",
+		"/home/jlmarks/Downloads/syntaxhighlighter_3.0.83.zip",
+		"/home/jlmarks/mycode/mybash/advancedBashScriptingGuide/hdlold",
+		"/home/jlmarks/hdl.txt",
+		"/home/jlmarks/.config/sublime-text-2/Packages/Snipplr/README.md",
+		"/home/jlmarks/.config/sublime-text-2/Packages/Snipplr/snipplr.sublime-settings",
+		"/home/jlmarks/mycode/mybash/advancedBashScriptingGuide/hdl_nearfinal",
+		"/home/jlmarks/mycode/mybash/notes.txt",
+		"/home/jlmarks/mycode/mysite/css/resume.css",
+		"/home/jlmarks/mycode/mysite/css/style.css",
+		"/home/jlmarks/mycode/mysite/cv/pandr/index.php",
+		"/home/jlmarks/Downloads/01-chapter4.markdown",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/httpd/conf/httpd.conf",
+		"/home/jlmarks/mycode/mynotes/software notes/date",
+		"/home/jlmarks/mycode/mynotes/software notes/rsync",
+		"/home/jlmarks/mycode/mynotes/software notes/sshfs",
+		"/home/jlmarks/mycode/mynotes/software notes/mount",
+		"/home/jlmarks/remotesystems/bje/oldbackups/home/jlmarks/t.sh",
+		"/home/jlmarks/Downloads/responsive/rtl.css",
+		"/home/jlmarks/Downloads/responsive/style.css",
+		"/home/jlmarks/mycode/mybash/newInstalls/brilliantjennyiptables.sh",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.132/home/jlmarks/.taskrc",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/init.d/tomcat",
+		"/home/jlmarks/catalina.out",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/profile.d/javahome.sh",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/home/jlmarks/tomcatdem.sh",
+		"/home/jlmarks/.taskrc",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/profile.d/colorls.csh",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/profile.d/less.sh",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/profile.d/lang.sh",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/profile",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/bashrc",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/etc/httpd/conf/httpd.conf",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/home/jlmarks/public_html/index.html",
+		"/home/jlmarks/mycode/mygits/taskdsetup/RHEL/twRHEL.sh",
+		"/home/jlmarks/mycode/mygits/taskdsetup/arch/tempArch.sh",
+		"/home/jlmarks/mycode/mygits/taskdsetup/arch/twArch.sh",
+		"/home/jlmarks/mycode/mygits/taskdsetup/debianOSs/twMINTfinal.sh",
+		"/home/jlmarks/mycode/mygits/taskdsetup/arch/taskd.service",
+		"/home/jlmarks/newjnl.txt",
+		"/home/jlmarks/1jnl.txt",
+		"/home/jlmarks/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/home/jlmarks/bj.sshd_config",
+		"/home/jlmarks/a1/totar/.taskrc",
+		"/home/jlmarks/jnl.txt",
+		"/home/jlmarks/1all.txt",
+		"/home/jlmarks/mycode/mygits/taskdsetup/RHEL/testa.sh",
+		"/home/jlmarks/mycode/mybash/twtssetupCENTOS.sh",
+		"/home/jlmarks/totar/.taskrc",
+		"/home/jlmarks/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/home/jlmarks/mycode/mygits/taskdsetup/debianOSs/clientsetup.sh",
+		"/home/jlmarks/totar/taskrc",
+		"/home/jlmarks/home/jlmarks/totar/server.txt",
+		"/etc/fstab",
+		"/etc/fuse.conf",
+		"/home/jlmarks/mycode/mygits/taskdsetup/README.md",
+		"/home/jlmarks/mycode/mygits/taskdsetup/debianOSs/taskd",
+		"/home/jlmarks/.bashrc",
+		"/home/jlmarks/.bash_profile",
+		"/home/jlmarks/mycode/mybash/twMINTfinal.sh",
+		"/home/jlmarks/mycode/mygits/taskdsetup/taskd",
+		"/home/jlmarks/mycode/mygits/taskdsetup/taskd.conf",
+		"/home/jlmarks/mycode/mybash/autostartFiles/taskd.sh",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/home/jlmarks/test.sh",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/home/jlmarks/tw.sh",
+		"/home/jlmarks/mycode/mybash/iptablesForCentOS.sh",
+		"/home/jlmarks/Desktop/rsnapshot.conf",
+		"/home/jlmarks/Desktop/server1.rsnapshot.conf",
+		"/home/jlmarks/mycode/mybash/twCENTOSsudo.sh",
+		"/home/jlmarks/mycode/mybash/autostartFiles/init.dfile for rsync.txt",
+		"/etc/init.d/skeleton",
+		"/etc/init.d/apache2",
+		"/home/jlmarks/mycode/mybash/autostartFiles/readme from init.d.txt",
+		"/home/jlmarks/mycode/mybash/twtsetup1.sh",
+		"/usr/local/bin/taskdctl",
+		"/home/jlmarks/mycode/mybash/twMINTAutoStart1703.sh",
+		"/home/jlmarks/mycode/mybash/tcsT.sh",
+		"/etc/init.d/virtualbox",
+		"/etc/rc2.d/README",
+		"/etc/init/lightdm.conf",
+		"/etc/init/console.conf",
+		"/home/jlmarks/.profile",
+		"/home/jlmarks/Downloads/twtssetup.sh",
+		"/home/jlmarks/mycode/mynotes/software notes/taskwarrior",
+		"/home/jlmarks/mycode/mybash/twtssetup.sh",
+		"/home/jlmarks/mycode/mybash/psuedo.sh",
+		"/home/jlmarks/mycode/mygits/tasknc/cmake/Modules/Findcurses.cmake",
+		"/home/jlmarks/Downloads/CentOS-6.5-i386-minimal/md5sum.txt",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/home/jlmarks/twts2.sh",
+		"/home/jlmarks/Desktop/jlmarksFinalServer.taskdconfig",
+		"/home/jlmarks/.gvfs/SFTP for root on 192.168.1.108/etc/rc.d/rc.local",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/etc/rc.d/rc.local",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/home/jlmarks/.bashrc",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/etc/profile",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/home/jlmarks/.bash_profile",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.149/home/jlmarks/psuedo.sh",
+		"/home/jlmarks/Desktop/jlmarkscentos.taskdconfig",
+		"/home/jlmarks/mycode/mybash/scp1.sh",
+		"/home/jlmarks/.ssh/config",
+		"/home/jlmarks/brilliantjenny/.bash_history",
+		"/home/jlmarks/.gvfs/SFTP for jlmarks on 192.168.1.108/home/jlmarks/tester.sh"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"sequence",
+			"up",
+			"email",
+			"main",
+			"contact",
+			"sales",
+			"Icloud.com",
+			"Blake G",
+			"Mike H",
+			"Shirley Zaccheo",
+			"Smart Marketers",
+			"shirley billson",
+			"asdff",
+			"	",
+			"(*)",
+			"(?: \\[ )",
+			"FILES_IN_DIR",
+			"files_in_dir",
+			"OUTFILE",
+			"INDENT",
+			"start_dir",
+			"z",
+			"%2F",
+			"%3A",
+			"%2F",
+			"\\n-",
+			"\"skill\"></li",
+			"log",
+			"<D",
+			"<d",
+			"<Loc",
+			"documentroot",
+			"NameV",
+			"Location",
+			"cmake .",
+			"$TASKDDATA/..",
+			"~",
+			"sudo ",
+			"sudo",
+			"~",
+			"INCLUDE_",
+			"",
+			": ",
+			"| tee $FN",
+			"\n  | tee $FN",
+			"\n | tee",
+			"$TASKD ",
+			"$ROOT ",
+			"$ROOT"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": true,
+		"replace_history":
+		[
+			"\"> ",
+			"\"></"
+		],
+		"reverse": true,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "python/page.py",
+					"settings":
+					{
+						"buffer_size": 6657,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6596,
+								6596
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2214.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"settings":
+					{
+						"buffer_size": 2678,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1305,
+								1305
+							]
+						],
+						"settings":
+						{
+							"auto_name": "import re",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"settings":
+					{
+						"buffer_size": 2913,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2913,
+								2913
+							]
+						],
+						"settings":
+						{
+							"auto_name": "txt=\"\"\"Chat Transcript Channel: ChatChat   10/02/2",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 195.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 3,
+					"file": "python/config.py",
+					"settings":
+					{
+						"buffer_size": 248,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1,
+								1
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "python/examples.py",
+					"settings":
+					{
+						"buffer_size": 5677,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2540,
+								2540
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"settings":
+					{
+						"buffer_size": 2749,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2749,
+								2749
+							]
+						],
+						"settings":
+						{
+							"auto_name": "[\"Chat Transcript Channel: ChatChat   10/02/20",
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage",
+							"word_wrap": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 29.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				0,
+				1,
+				1,
+				2
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			0.809443142161,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.sftp":
+	{
+		"height": 88.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 243.0,
+	"status_bar_visible": true
+}
