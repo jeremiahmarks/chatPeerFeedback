@@ -5,10 +5,21 @@ import MySQLdb
 import cgi
 import re
 import datetime 
+import random
+import cgitb
 
 #import examples
 
-db=MySQLdb.connect(host=config.MySQLConnection.hostname,user=config.MySQLConnection.username, passwd=config.MySQLConnection.password, db=config.MySQLConnection.dbname)
+print "Content-type: text/html\n\n"
+cgitb.enable()
+
+
+###############
+##
+## Classes
+##
+###############
+
 
 class Line(object):
 	def __init__(self, lineNumber, whoSaidIt, whatWasSaid, timeItWasSaid, timeSinceLastStatement):
@@ -32,119 +43,184 @@ class Chat(object):
 		self.lines=[]
 
 
-
-def textParser(txt, db="A"):
-	firstparse = txt.find('[')
-	secondparse = txt.find('[',firstparse)
-	thirdparse = txt.find('[',secondparse)
-	firstq=txt.find('?',firstparse)
-	header = txt[:firstparse]
-	results = re.match( r'.*([0-9][0-9])/([0-9][0-9])/([0-9][0-9][0-9][0-9]) ([0-9][0-9]):([0-9][0-9]) [AP]M(.*) (.*),.*', header, re.M|re.I)
-	#I have no idea how RE works, in case you cannot tell
-	thisdate={}
-	thisdate["month"] = int(results.group(1))
-	thisdate["day"] = int(results.group(2))
-	thisdate["year"] = int(results.group(3))
-	thisdate["hour"] = int(results.group(4))
-	thisdate["minute"] = int(results.group(5))
-	agentsName = results.group(6) + " " +results.group(7)[0]
-	zeroline=txt[firstparse:firstq]
-	starttime = datetime.datetime(thisdate["year"],thisdate["month"],thisdate["day"],thisdate["hour"],thisdate["minute"])
-	firstLine=Line(0,agentsName,zeroline,starttime,0)
-	listOfLines=[firstLine,]
+################################################################################
+##
+##  General "What to do now" logic
+##
+################################################################################
 
 
-	allLines=textsplitter(txt[firstq+1:], 1,listOfLines)
-	return allLines
+def guidingWhereToGo(arguments):
 
-def textsplitter(restOfText, lineNumber, listOfLines):
-	potentialStartOfNextLine = restOfText.find('[',1)
-	print restOfText
-	if not (potentialStartOfNextLine==-1):
-		probableLine=restOfText[:potentialStartOfNextLine]
-		restOfRestOfText=restOfText[potentialStartOfNextLine:]
-		##print "if Not __--__--\n\n"+ probableLine + "\n\n --__--\n\n" + restOfRestOfText
+	if (arguments.has_key("chat")):
+		votingPage(arguments["chat"].value)
+	elif (arguments.has_key("feedbacksubmit")):
+		updateDatabase(arguments)
+	elif (arguments.has_key("singlesubmit")):
+		individualAdd()
+	elif (arguments.has_key("multisubmit")):
+		multiAdd()
+	elif (arguments.has_key("singleChatSubmitted")):
+		mainSequence(arguments["chatlog"].value, arguments["chatid"].value)
 	else:
-		probableLine=restOfText
-		restOfText=""
-	closingBracket = restOfRestOfText.find("]")
-	stringToTest=restOfRestOfText[:closingBracket]
-	timeRegEx=re.compile("""([0-9][0-9]):([0-9][0-9]):([0-9][0-9]).([AP]M)*""")
-	timeOfNextLine = timeRegEx.findall(stringToTest)
-	print timeOfNextLine
-	print probableLine
-	if not (len(timeOfNextLine[0]) == 4):
-		print "timeOfNextLine"
-		print timeOfNextLine
-		return -1
-	else:
+		generateIndexPage()
 
-		timeStampEnd = probableLine.find(']')
-		print "\nTimeStampEnd \n" + probableLine[:timeStampEnd+1]
-		nameEnd = probableLine.find(":",timeStampEnd)
-		print "\nNameEnd \n" + probableLine[:nameEnd]
-		timeStamp = probableLine[:timeStampEnd+1]
-		print "\ntimeStamp \n" + timeStamp
-		name = probableLine[timeStampEnd+1:nameEnd]
-		print "\n name \n" + name
-		whatWasSaid = probableLine[nameEnd:]
-		print "\n whatWasSaid \n" + whatWasSaid
-		timePartsOfThisLine = timeRegEx.findall(timeStamp)
-		print "timeParts"
-		print len(timePartsOfThisLine)
-		hours = int(timePartsOfThisLine[0][0])
-		minutes = int(timePartsOfThisLine[0][1])
-		seconds = int(timePartsOfThisLine[0][2])
-		if (timePartsOfThisLine[0][3] == "PM"):
-			hours = hours+12
-		timeThisWasSaid = datetime.datetime(year=2000, month = 1, day = 1, hour = hours, minute =minutes, second = seconds)
-		timeOfLastLine = listOfLines[-1].timeItWasSaid
-		timeSinceLastStatement = timeThisWasSaid - timeOfLastLine
-		toadd = Line(lineNumber, name, whatWasSaid,timeThisWasSaid, timeSinceLastStatement)
-		listOfLines.append(toadd)
-		print toadd
-		raw_input("I just added a line.")
-		#newRestOfText = restOfRestOfText[potentialStartOfNextLine-1:]
 
-		#print newRestOfText
-		#raw_input("waiting")
-		lineNumber +=1
-		potentialStartOfNextLine = restOfRestOfText.find("[",1)
-		if (potentialStartOfNextLine == -1):
-			print "potentialStartOfNextLine == 1"
-			return listOfLines
-		newList = textsplitter(restOfRestOfText, lineNumber,listOfLines)
-		while (newList == -1):
-			print "newlist == -1"
-			potentialStartOfNextLine = restOfRestOfText.find("[",potentialStartOfNextLine)
-			newList = textsplitter(restOfRestOfText, lineNumber,listOfLines)
-			if (potentialStartOfNextLine == -1):
-				newList=textsplitter(restOfRestOfText, lineNumber,listOfLines)
-		return newList
+
+################################################################################
+##
+##  Displaying that data
+##
+################################################################################
  
+
+
+
+
+def generateIndexPage():
+	db=MySQLdb.connect(host=config.MySQLConnection.hostname,user=config.MySQLConnection.username, passwd=config.MySQLConnection.password, db=config.MySQLConnection.dbname)
+	cur = db.cursor()
+
+	myquery = "SELECT * FROM maintable"
+	cur.execute(myquery)
+
+	rows = cur.fetchall()
+
+	pagehtml = "<html><head></head><body>"
+
+	pagehtml = pagehtml + """
+	<div class="buttons">
+		<form class="addchats" name="addchats" method="post" action="./page.py">
+			<input type="submit" name="singlesubmit" value="Submit a single chat">
+			<input type="submit" name="multisubmit" value="Submit multiple chats">
+		</form>
+	</div>
+
+	"""
+
+	addtable = "<table>"
+	closetable = "</table>"
+	tableRow="<tr>"
+	closeTableRow="</tr>"
+	closeBody="</body></html>"
+
+	pagehtml = pagehtml + addtable
+	pagehtml = pagehtml + tableRow
+	pagehtml = pagehtml + "<td>ChatID</td><td>Agent</td>" + closeTableRow 
+
+
+
+	for row in rows:
+		pagehtml = pagehtml + tableRow + """<td><a href="./page.py?chat=%s">""" %(row[0]) + row[0] + """</a></td><td>""" + row[2] + "</td>" + closeTableRow
+	pagehtml = pagehtml + closetable + closeBody
+
+	print pagehtml
+
+def votingPage(chatid):
+	db=MySQLdb.connect(host=config.MySQLConnection.hostname,user=config.MySQLConnection.username, passwd=config.MySQLConnection.password, db=config.MySQLConnection.dbname)
+	cur=db.cursor()
+
+	myquery = "SELECT * FROM interactions WHERE chatid ='%s' ORDER BY line" %(chatid)
+	cur.execute(myquery)
+
+	rows = cur.fetchall()
+	totalLines=len(rows)
+
+	htmlString="""<html><head></head><body><form class="feedback" name="%s" method="post" c><table class="chatRecord" border="1"><tr class="heading"><td>Who</td><td>What Was Said</td><td>Simple Feedback</td><td>Complex Feedback</td></tr>""" %(chatid)
+	htmlString = htmlString + """ <input type="hidden" name="thischatid" value="%s"> <input type="hidden" name="linesOfChat" value="%s">""" %(chatid, totalLines)
+	for row in rows:
+		if (row[2] == "'agent'"):
+			htmlString=htmlString + """
+			<tr class="agent" >
+				<td class="WhoIsTalking">%s</td>
+				<td class="WhatWasSaid">%s</td>
+				<td>
+					<table class="agentButtons">
+						<tr>
+							<td class="posButton">
+								<input type="radio" name="%s" value="pos">
+							</td>
+						</tr>
+						<tr>
+							<td class="negButton">
+								<input type="radio" name="%s" value="neg">
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td>
+					<input type="textarea" name="%s" cols="40" rows="5"></textarea>
+				</td>
+			</tr>""" %(row[2], row[3], "simple"+row[1], "simple"+row[1], "text"+row[1])
+		else:
+			htmlString = htmlString+"""
+			<tr class="user" >
+				<td class="WhoIsTalking">%s</td>
+				<td class="WhatWasSaid">%s</td>
+				<td class="userButton">
+					<input type="radio" name="%s" value="important">
+				</td>
+				<td>
+					<input type="textarea" name="%s"ols="40" rows="5"></textarea>
+				</td>
+			</tr>""" %(row[2], row[3], "simple"+row[1],"text"+row[1])
+	htmlString=htmlString + """
+		</table> <input type="submit" name="feedbacksubmit" value="submit"></form></body></html>"""
+	print htmlString
+
+def cumulativePage(chatid):
+	print"comingsoon!"
+def individualAdd():
+	htmlString="<html><head></head><body>"
+	htmlString="""
+	<form name="singlesubmit" class="chatsubmission" method="post" action="./page.py">
+		<table>
+			<tr>
+				<td>
+					<textarea name="chatlog" cols="90" rows="50"></textarea>
+				</td>
+				<td>
+					<label for="chatid">Chat ID</label>
+					<input type="text" id="chatid" name="chatid"><br />
+					<input type="submit" name="singleChatSubmitted" value="Submit Chat">
+				</td>
+			</tr>
+		</table>
+	</form></body></html>
+
+	"""
+	print htmlString
+
+################################################################################
+##
+##  Submission Processing
+##
+################################################################################
+
 		
-def mainSequence(db, txt, chatid):
+def mainSequence(txt, chatid):
 	thischat = parseBlobIntoLines(txt)
 	thischat.chatID=chatid
+	db=MySQLdb.connect(host=config.MySQLConnection.hostname,user=config.MySQLConnection.username, passwd=config.MySQLConnection.password, db=config.MySQLConnection.dbname)
 
 	cursor = db.cursor()
+	print txt
 
-	cmd = "INSERT INTO maintable (chatid) VALUES (%s)" %( chatid )
-	cursor.execute(cmd)
+	cmd = "INSERT INTO maintable (chatid, agent) VALUES (%s, %s)" 
+	cursor.execute(cmd, (chatid,thischat.Agent ))
 	for each in thischat.lines:
 		if ((each.whoSaidIt==thischat.Agent) or (each.whoSaidIt==thischat.Agentfname + " " + thischat.Agentlinitial)):
 			whosaid="agent"
 		else:
 			whosaid="customer"
 
-		cmd = """INSERT INTO interactions (chatid, line, whois, linetext, timefromlastline) VALUES ("%s", "%s", "%s", "%s", "%s")""" %(chatid, str(each.lineNumber), whosaid, each.whatWasSaid, each.timeSinceLastStatement)
-		print cmd
-		cursor.execute(cmd)
+		cmd = """INSERT INTO interactions (chatid, line, whois, linetext, timefromlastline) VALUES (%s, %s, %s, %s, %s)""" 
+		vals = (chatid, str(each.lineNumber), whosaid, each.whatWasSaid, each.timeSinceLastStatement)
 
+		cursor.execute(cmd, (chatid, each.lineNumber, whosaid, each.whatWasSaid, each.timeSinceLastStatement))
 
-
-
-
+		cmd2 = """INSERT INTO simplefeedback (chatid, line) VALUES (%s, %s)"""
+		cursor.execute(cmd2, (chatid, str(each.lineNumber)))
 
 
 def parseBlobIntoLines(txt):
@@ -269,5 +345,58 @@ def convertNormalLine(chattimeStamp, txt, thischat):
 		whoSaidIt = txt[:txt.find(':')]
 	thischat.lines.append(Line(lineNumber,whoSaidIt,txt[txt.find(':'):],messageTimeAsObject,timeDifference))
 
+
+
+
+
+
+def updateDatabase(arguments):
+	chatid = arguments["thischatid"].value
+	totalLines = arguments["linesOfChat"].value
+
+	for x in range(int(totalLines)):
+		if arguments.has_key("simple"+str(x)):
+			incrementSimple(chatid, str(x), arguments["simple"+str(x)].value)
+		if arguments.has_key("text"+str(x)):
+			updateComplex(chatid,str(x),arguments["text"+str(x)].value)
+
+
+
+
+def incrementSimple(chatid, linesOfChat, value):
+	db=MySQLdb.connect(host=config.MySQLConnection.hostname,user=config.MySQLConnection.username, passwd=config.MySQLConnection.password, db=config.MySQLConnection.dbname)
+	cur = db.cursor()
+	if (value=="pos" or value=="important"):
+		stmt="""UPDATE simplefeedback SET counta = counta + 1 WHERE chatid="%s" AND line = "%s" """
+	else:
+		stmt = """UPDATE simplefeedback SET countb = countb + 1 WHERE chatid ="%s" AND line = "%s" """
+
+	cur.execute(stmt, (chatid, linesOfChat))
+
+def updateComplex(chatid, linesOfChat, feedback):
+	db=MySQLdb.connect(host=config.MySQLConnection.hostname,user=config.MySQLConnection.username, passwd=config.MySQLConnection.password, db=config.MySQLConnection.dbname)
+	cur = db.cursor()
+	stmt="""INSERT INTO complexfeedback (chatid, line, complexfeedback) VALUES (%s, %s, %s)"""
+	cur.execute(stmt, (chatid, linesOfChat, feedback))
+
+
+################################################################################
+##
+##  Various if name is main processes
+##
+################################################################################
+
+
+#if __name__ == '__main__':
+#	start=random.randint(0,5000)
+#	for chat in examples.examples:
+#		db=MySQLdb.connect(host=config.MySQLConnection.hostname,user=config.MySQLConnection.username, passwd=config.MySQLConnection.password, db=config.MySQLConnection.dbname)
+#		mainSequence(db,chat,start)
+#		start+=1
+
+
+if __name__ == '__main__':
+	arguments = cgi.FieldStorage()
+	guidingWhereToGo(arguments)
 
 
