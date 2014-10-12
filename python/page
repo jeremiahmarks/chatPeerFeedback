@@ -22,21 +22,21 @@ import cgitb
 	############################################################################
 	## Database Settings
 	############################################################################
-mysqlhostname=""
-mysqlusername=""
-mysqlpassword=""
-mysqldbname=""
+mysqlhostname="ISchat.db.6816406.hostedresource.com"
+mysqlusername="ISchat"
+mysqlpassword="Ch47P33rR3v!3w"
+mysqldbname="ISchat"
 	############################################################################
 	## Path to this file for email
 	############################################################################
-urltothisfile=""
+urltothisfile="http://brilliantjenny.com:51630/html/page"
 	############################################################################
 	## Infusiont particular Settings
 	############################################################################
-infusionsoftapp=""
-infusionsoftAPIKey=""
+infusionsoftapp="if188"
+infusionsoftAPIKey="f33ec4ecc6d7539babbcedda0ee1e75f"
 tagID=395   #This is the tag that is associated with people who should recieve the emails for peer feedback
-fromAddress = ""
+fromAddress = "Jeremiah.Marks@infusionsoft.com"
 	############################################################################
 	##  Time Thresholds
 	############################################################################
