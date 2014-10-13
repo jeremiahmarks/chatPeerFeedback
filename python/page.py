@@ -1,16 +1,38 @@
 #!/usr/bin/python
 
-
-
-
 import MySQLdb
 import cgi
 import re
 import datetime
 import xmlrpclib
-#import random
 import cgitb
-#import config
+import Cookie
+import os
+import time
+import errno
+import hashlib
+from Cookie import SimpleCookie
+from cPickle import dump, load, HIGHEST_PROTOCOL, dumps, loads
+
+print "Content-type: text/html\n\n"
+
+if not "HTTP_COOKIE" in os.environ:
+	os.environ["HTTP_COOKIE"] = ""
+
+SESSION = None
+
+S_DIR = os.path.expanduser("~/.py_sessions") # expanduser for windows users
+S_EXT = ".ps"
+S_ID = "__sid__"
+
+TODAY = str(datetime.date.today())
+DEBUG = [] # debug messages
+
+if not os.path.exists(S_DIR):
+	os.makedirs(S_DIR)
+
+class NoCookiesError(Exception): pass
+class NotStarted(Exception): pass
 
 
 
@@ -43,8 +65,9 @@ fromAddress = ""
 timeGreen = 90
 timeYellow=240
 
-print "Content-type: text/html\n\n"
-cgitb.enable()
+PASSWORD=""
+
+
 
 
 ################################################################################
@@ -193,12 +216,12 @@ def databaseConnection():
 	############################################################################
 def mainnav():
 	navstr="""	<div class="nav">
-					<form class="addchats" name="addchats" method="post" action="./page">
+					<form class="addchats" name="addchats" method="post" action="./">
 						<input type="submit" name="singlesubmit" value="Submit a single chat">
 						<!-- <input type="submit" name="multisubmit" value="Submit multiple chats"> -->
 						<input type="submit" name="goindex" value="Return to the Index Page">
 						<input type="submit" name="emailRecent" value="Email Recent Updates">
-						<input type="submit" name="deleteData" value="delete">
+						<!-- <input type="submit" name="deleteData" value="delete"> -->
 						<div class="signupForNotifications">
 							<label for="Name">Name:</label>
 							<input type="text" id="Name" name="Name" />
@@ -287,6 +310,39 @@ def pagestart(pagetitle="InfusionSoft Chat PeerFeedback"):
 						color: #000;
 						text-align: center;
 					}
+					.agent{
+						background-color: #444;
+					}
+					.user{
+						background-color: #222;
+					}
+					.agentButtons{
+						width: 100%%;
+						text-align: center;
+					}
+					.userButton{
+						text-align: center;
+					}
+					.complexfeedback{
+						width: 100%%;
+					}
+					.writtenFeedback{
+						width: 100%%;
+					}
+					.agentFeedback{
+						width: 100%%;
+						height: 100%%;
+						text-align: center;
+					}
+					.userFeedback{
+						text-align: center;
+					}
+					a:link	{
+						color: red;
+					}
+					a:visited {
+						color: #6A0000;
+					}
 
 				</style>
                                 <script language="javascript" type="text/javascript">
@@ -333,7 +389,8 @@ def generateIndexPage():
 	cur.execute(myquery)
 
 	rows = cur.fetchall()
-
+	cur.close()
+	db.close()
 	pagehtml = pagestart() + mainnav()
 
 
@@ -344,6 +401,7 @@ def generateIndexPage():
 									<td width="200">Date Uploaded</td>
 									<td width="200">Provide Feedback</td>
 									<td width="200">View feedback</td>
+									<td width="200">Times Submitted</td>
 								</tr>"""
 
 	for row in rows:
@@ -352,7 +410,8 @@ def generateIndexPage():
 								<td class="dateUploaded">%s</td>
 								<td class="providefeedback"><a href="%s">Provide Feedback</td>
 								<td class="viewfeedback"><a href="%s">View Feedback</td>
-							</tr> """ %(row[0], row[1], urltothisfile + "?chat=" + row[0], urltothisfile + "?chat=" + row[0] + "&mode=view")
+								<td class="submittedCount">%s</td>
+							</tr> """ %(row[0], row[1], urltothisfile + "?chat=" + row[0], urltothisfile + "?chat=" + row[0] + "&mode=view", row[3])
 
 	pagehtml = pagehtml + """</table></body>"""
 
@@ -379,18 +438,21 @@ def votingPage(chatid):
 
 	myquery = "SELECT * FROM interactions WHERE chatid ='%s' ORDER BY line" %(chatid)
 	cur.execute(myquery)
+	
 
 	rows = cur.fetchall()
+	cur.close()
+	db.close()
 	totalLines=len(rows)
 
 	htmlString= pagestart() + mainnav()
-	htmlString = htmlString + 	"""<form class="feedback" name="%s" method="post" action="./page">
+	htmlString = htmlString + 	"""<form class="feedback" name="%s" method="post" action="./">
 										<table class="chatRecord" border="1">
 											<tr class="heading">
-												<td>Who</td>
-												<td>What Was Said</td>
-												<td>Simple Feedback</td>
-												<td>Complex Feedback</td>
+												<td width="10%%">Who</td>
+												<td width="30%%">What Was Said</td>
+												<td width="10%%">Simple Feedback</td>
+												<td width="30%%">Complex Feedback</td>
 											</tr>""" %(chatid)
 	htmlString = htmlString + """ 	<input type="hidden" name="thischatid" value="%s">
 									<input type="hidden" name="linesOfChat" value="%s">""" %(chatid, totalLines)
@@ -437,7 +499,7 @@ def votingPage(chatid):
 					</table>
 				</td>
 				<td>
-					<input type="textarea" name="%s" cols="40" rows="5"></textarea>
+					<input type="textarea" name="%s" class="complexfeedback" ></textarea>
 				</td>
 			</tr>""" %(row[2], thistext, "simple"+row[1],"pos"+row[1], "pos"+row[1], "simple"+row[1],"neg"+row[1],"neg"+row[1], "text"+row[1])
 
@@ -464,7 +526,7 @@ def votingPage(chatid):
 					</table>
 				</td>
 				<td>
-					<input type="textarea" name="%s" cols="40" rows="5"></textarea>
+					<input type="textarea" name="%s" class="complexfeedback"></textarea>
 				</td>
 			</tr>
 			   """ %(timeClass, row[4], row[2], thistext, "simple"+row[1],"pos"+row[1], "pos"+row[1], "simple"+row[1],"neg"+row[1],"neg"+row[1], "text"+row[1])
@@ -479,7 +541,7 @@ def votingPage(chatid):
 					<label for="%s"></label>
 				</td>
 				<td>
-					<input type="textarea" name="%s"ols="40" rows="5"></textarea>
+					<input type="textarea" name="%s" class="complexfeedback"></textarea>
 				</td>
 			</tr>
 			""" %(timeClass, row[4], row[2], thistext , "simple"+row[1], "important"+row[1], "important"+row[1], "text"+row[1])
@@ -514,20 +576,27 @@ def cumulativePage(chatid):
 			thisquery = """SELECT * FROM %s WHERE chatid = "%s" ORDER BY line""" %(eachtable, chatid)
 		cur.execute(thisquery)
 		pageinformation[eachtable] = cur.fetchall()
+		cur.close()
+		db.close()
+
+	fullname = pageinformation["maintable"][0][2]
+	fname = fullname.split()[0]
 
 	htmlString = pagestart() + mainnav()
 
 	#######
 	## setting up the top of the page
 	#######
-	headString = "<div><span>Agent: %s</span><span>ChatID: %s</span></div>" %(pageinformation['maintable'][0][2] , chatid)
-
+	# headString = "<div><span>Agent: %s</span><span>ChatID: %s</span></div>" %(pageinformation['maintable'][0][2] , chatid)
+	headString = "<div><span>ChatID : %s</span></div>" %(chatid)
 	##########
 	## Setting Up The Data  (it is capitalized because it is important (>.<)  )
 	##########
 
 	for eachline in pageinformation['interactions']:
-		thischat.orderedLines[eachline[1]] = Line(eachline[1], eachline[2], eachline[3])
+		thistext = eachline[3].replace(fullname, "Agent")
+		thistext = thistext.replace(fname, "Agent")
+		thischat.orderedLines[eachline[1]] = Line(eachline[1], eachline[2], thistext)
 	for eachline in pageinformation['simplefeedback']:
 		thischat.orderedLines[eachline[1]].setSimpleFeedBack(eachline[2], eachline[3])
 	for eachline in pageinformation['complexfeedback']:
@@ -539,13 +608,14 @@ def cumulativePage(chatid):
 
 	tablestring="""<table class="chatfeedback" border="1">
 					<tr class="feedbackHeader">
-						<td>Who</td>
-						<td>What</td>
-						<td>Simple</td>
-						<td>In-Depth</td>
+						<td width="10%">Who</td>
+						<td width="30%">What</td>
+						<td width="10%">Simple</td>
+						<td width="30%">In-Depth</td>
 					</tr>
 					"""
 	for eachline in range(len(thischat.orderedLines.keys())):
+
 		el='%05d' %int(eachline)
 		if (thischat.orderedLines[el].whoSaidIt == "agent"):
 			thisrow="""
@@ -553,21 +623,21 @@ def cumulativePage(chatid):
 				<td class="WhoIsTalking">%s</td>
 				<td class="WhatWasSaid">%s</td>
 				<td>
-					<table class="agentFeedback">
+					<table class="agentFeedback" border="1">
 						<tr>
-							<td class="posFeedback">
-								%s
+							<td class="posFeedback" >
+								%s people think this was said well
 							</td>
 						</tr>
 						<tr>
 							<td class="negFeedback">
-								%s
+								%s people think this could be refined
 							</td>
 						</tr>
 					</table>
 				</td>
 				<td>
-					<table class="writtenFeedback">""" %(thischat.orderedLines[el].whoSaidIt, thischat.orderedLines[el].whatWasSaid, str(thischat.orderedLines[el].simpleA), str(thischat.orderedLines[el].simpleB))
+					<table class="writtenFeedback" border="1">""" %(thischat.orderedLines[el].whoSaidIt, thischat.orderedLines[el].whatWasSaid, str(thischat.orderedLines[el].simpleA), str(thischat.orderedLines[el].simpleB))
 			for eachFeedback in thischat.orderedLines[el].allComplexFeedback:
 				thisrow = thisrow + """<tr class="writtenFeedback"><td class="writtenFeedback">%s</td></tr>""" %(eachFeedback, )
 			thisrow=thisrow + """
@@ -580,10 +650,10 @@ def cumulativePage(chatid):
 				<td class="WhoIsTalking">%s</td>
 				<td class="WhatWasSaid">%s</td>
 				<td class="userFeedback">
-					%s
+					%s people think that the customer made an important point here
 				</td>
 				<td>
-					<table class="writtenFeedback">""" %(thischat.orderedLines[el].whoSaidIt, thischat.orderedLines[el].whatWasSaid, str(thischat.orderedLines[el].simpleA))
+					<table class="writtenFeedback" border ="1">""" %(thischat.orderedLines[el].whoSaidIt, thischat.orderedLines[el].whatWasSaid, str(thischat.orderedLines[el].simpleA))
 			for eachFeedback in thischat.orderedLines[el].allComplexFeedback:
 				thisrow = thisrow + """<tr class="writtenFeedback"><td class="writtenFeedback">%s</td></tr>""" %(eachFeedback, )
 			thisrow=thisrow + """
@@ -607,7 +677,7 @@ def multiAdd():
 def individualAdd():
 	htmlString=pagestart() + mainnav()
 	htmlString=htmlString + """
-	<form name="singlesubmit" class="chatsubmission" method="post" action="./page">
+	<form name="singlesubmit" class="chatsubmission" method="post" action="./">
 		<table>
 			<tr>
 				<td>
@@ -655,6 +725,8 @@ def mainSequence(txt, chatid):
 
 		cmd2 = """INSERT INTO simplefeedback (chatid, line) VALUES (%s, %s)"""
 		cursor.execute(cmd2, (chatid, '%05d' %int(each.lineNumber)))
+	cursor.close()
+	db.close()
 	generateIndexPage()
 		########################################################################
 		##	Takes an entire chat interaction and returns a series of Lines
@@ -799,10 +871,15 @@ def convertNormalLine(chattimeStamp, txt, thischat):
 def updateDatabase(arguments):
 	chatid = arguments["thischatid"].value
 	totalLines = arguments["linesOfChat"].value
+	stmt="""UPDATE maintable SET feedbackssubmitted = feedbackssubmitted + 1 where chatid="%s" """ %(chatid)
+	db=databaseConnection()
+	cur=db.cursor()
+	cur.execute(stmt)
+	cur.close()
+	db.close()
 	for x in range(int(totalLines)):
 
 		if arguments.has_key("simple"+str("%05d" %x)):
-			print "Updating simple"
 			incrementSimple(chatid, str("%05d" %x), arguments["simple"+str("%05d" %x)].value)
 		if arguments.has_key("text"+str("%05d" %x)):
 			updateComplex(chatid, str("%05d" %x),arguments["text"+str("%05d" %x)].value)
@@ -820,6 +897,8 @@ def incrementSimple(chatid, linesOfChat, value):
 		stmt = """UPDATE simplefeedback SET countb = countb + 1 WHERE chatid ="%s" AND line = "%s" """ %(chatid, linesOfChat)
 
 	cur.execute(stmt)
+	cur.close()
+	db.close()
 		########################################################################
 		##	This method updates the written feedback section
 		########################################################################
@@ -828,20 +907,23 @@ def updateComplex(chatid, linesOfChat, feedback):
 	cur = db.cursor()
 	stmt="""INSERT INTO complexfeedback (chatid, line, complexfeedback) VALUES (%s, %s, %s)"""
 	cur.execute(stmt, (chatid, linesOfChat, feedback))
-
+	cur.close()
+	db.close()
 	############################################################################
 	##
 	##  This function clears the tables data
 	##
 	############################################################################
 def dropall():
-	tables = ["complexfeedback", 'interactions', 'maintable', 'simplefeedback']
+	tables = ["complexfeedback", 'interactions', 'maintable', 'simplefeedback', 'emailed']
 	db = databaseConnection()
 	cur = db.cursor()
 
 	for eachtable in tables:
 		stmt="""TRUNCATE TABLE %s;""" %(eachtable)
 		cur.execute(stmt)
+	cur.close()
+	db.close()
 	print "all dropped"
 	generateIndexPage()
 ################################################################################
@@ -877,7 +959,7 @@ def emailUpdates():
 									</td>
 								</tr>""" %(each[0], each[2], urltothisfile, each[0], urltothisfile, each[0])
 		htmlList=htmlList+"""</table>"""
-
+		finalQuery = """INSERT INTO emailed (datesent) VALUES (NOW())"""
 		emailbody = emailTop() + htmlList + emailbottom()
 		iserver.sendEmail(emailbody)
 		generateIndexPage()
@@ -911,8 +993,328 @@ def emailbottom():
 #		mainSequence(db,chat,start)
 #		start+=1
 
+def loginpage():
+
+	htmlString=pagestart()
+	htmlString = htmlString + """
+		<form method="POST">
+			<input name="password" type="password">
+			<input name="login" type="submit" value="login">
+		</form>
+		"""
+	print htmlString
+
+
+################################################################################
+##
+##	Session Management
+##
+################################################################################
+
+class Session(object):
+
+	def __init__(self):
+		self.data = {}
+		self.form = cgi.FieldStorage()
+		self.started = False
+		self._flock = None
+		self.expires = 0 # delete right away
+		
+		self.__sid = sid = self.__getsid()
+		self.path = os.path.join(S_DIR, sid+S_EXT)
+
+	def isset(self, name):
+		"""Is the variable set in the session?"""
+		if not self.started:
+			raise NotStarted("Session must be started")
+
+		return name in self
+
+	def unset(self, name):
+		"""Unset the name from the session"""
+		if not self.started:
+			raise NotStarted("Session must be started")
+		del self[name]
+
+	@staticmethod
+	def __newsid():
+		"""Create a new session ID"""
+		h = hashlib.new("ripemd160")
+		h.update(str(time.time()/time.clock()**-1)+str(os.getpid()))
+		return h.hexdigest()
+
+	def __getsid(self):
+		"""Get the current session ID or return a new one"""
+		# first, try to load the sid from the GET or POST forms
+		#self.form 
+		if self.form.has_key(S_ID):
+			sid = self.form[S_ID].value
+			return sid
+
+		# then try to load the sid from the HTTP cookie
+		self.cookie = SimpleCookie()
+		if os.environ.has_key('HTTP_COOKIE'):
+			self.cookie.load(os.environ['HTTP_COOKIE'])
+
+			if S_ID in self.cookie:
+				sid = self.cookie[S_ID].value
+				return sid
+		else:
+			raise NoCookiesError("Could not find any cookies")
+
+		# if all else fails, return a new sid
+		return self.__newsid()
+
+	def getFormInfo(self):
+		return self.form
+
+	def getsid(self):
+		"""
+		Return the name and value that the sid needs to have in a GET or POST
+		request
+		"""
+		if not self.started:
+			raise NotStarted("Session must be started")
+		return (S_ID, self.__sid)
+
+	def start(self):
+		"""Start the session"""
+		if self.started:
+			return True # session cannot be started more than once per script
+
+		self._flock = FileLock(self.path)
+		self._flock.acquire()
+
+		# load the session if it exists
+		if os.path.exists(self.path):
+			with open(self.path, "rb") as f:
+				self.data = dict(load(f))
+				self.data["__date_loaded__"] = TODAY
+
+		else: # create a session
+			with open(self.path, "wb") as f:
+				self.data = {"__date_loaded__":TODAY}
+
+		# the session is officially started!
+		self.started = True
+
+		# store the sid in the cookie
+		self.cookie[S_ID] = self.__sid
+		self.cookie[S_ID]["expires"] = str(self.expires)
+		self.cookie[S_ID]["version"] = "1"
+
+		return True
+
+	def commit(self):
+		"""Commit the changes to the session"""
+		
+		if not self.started:
+			raise NotStarted("Session must be started")
+		with open(self.path, "wb") as f:
+			dump(self.data, f, HIGHEST_PROTOCOL)
+
+	def destroy(self):
+		"""Destroy the session"""
+		if not self.started:
+			raise NotStarted("Session must be started")
+		os.remove(self.path)
+		if self._flock:
+			self._flock.release()
+		self.started = False
+
+	def output(self):
+		"""Commit changes and send headers."""
+	
+		if not self.started:
+			raise NotStarted("Session must be started")
+		self.commit()
+		return self.cookie.output()
+
+	def setdefault(self, item, default=None):
+		if not self.started:
+			raise NotStarted("Session must be started")
+		if not self.isset(item):
+			self[item] = default
+
+		return self[item]
+		
+	def set_expires(self, days):
+		"""Sets the expiration of the cookie"""
+		date = datetime.date.today() + datetime.timedelta(days=days)
+		self.expires = date.strftime("%a, %d-%b-%Y %H:%M:%S PST")
+		self.cookie[S_ID]["expires"] = str(self.expires)
+
+	def __getitem__(self, item):
+		"""Get the item from the session"""
+		if not self.started:
+			raise NotStarted("Session must be started")
+		return self.data.__getitem__(item)
+
+	def __setitem__(self, item, value):
+		"""set the item into the session"""
+		if not self.started:
+			raise NotStarted("Session must be started")
+		self.data.__setitem__(item, value)
+
+	def __delitem__(self, item):
+		if not self.started:
+			raise NotStarted("Session must be started")
+		self.data.__delitem__(item)
+
+	def __contains__(self, item):
+		"""Return if item in the session"""
+		if not self.started:
+			raise NotStarted("Session must be started")
+		return self.data.__contains__(item)
+
+	def __iter__(self):
+		"""Go through the names of all the session variables"""
+		if not self.started:
+			raise NotStarted("Session must be started")
+		return self.data.__iter__()
+
+def start():
+	global PASSWORD
+	global SESSION
+	SESSION = Session()
+	return SESSION.start()
+
+def destroy():
+	global SESSION
+	if SESSION:
+		SESSION.destroy()
+
+def get_session():
+	global SESSION
+	if not SESSION:
+		SESSION = Session()
+	return SESSION
+
+### The following is a (little) modified version of this:
+# http://www.evanfosmark.com/2009/01/cross-platform-file-locking-support-in-
+# python/
+
+class FileLockException(Exception):
+	pass
+
+class FileLock(object):
+	""" A file locking mechanism that has context-manager support so
+		you can use it in a with statement. This should be relatively cross
+		compatible as it doesn't rely on msvcrt or fcntl for the locking.
+	"""
+
+	def __init__(self, file_name, timeout=10, delay=.05):
+		""" Prepare the file locker. Specify the file to lock and optionally
+			the maximum timeout and the delay between each attempt to lock.
+		"""
+		self.is_locked = False
+		self.lockfile = os.path.join(os.getcwd(), "%s.lock" % file_name)
+		self.file_name = file_name
+		self.timeout = timeout
+		self.delay = delay
+
+	def acquire(self):
+		""" Acquire the lock, if possible. If the lock is in use, it check again
+			every `wait` seconds. It does this until it either gets the lock or
+			exceeds `timeout` number of seconds, in which case it throws
+			an exception.
+		"""
+		if self.is_locked:
+			return
+
+		start_time = time.time()
+		while True:
+			try:
+				self.fd = os.open(self.lockfile, os.O_CREAT|os.O_EXCL|os.O_RDWR)
+				break;
+			except OSError as e:
+				if e.errno != errno.EEXIST:
+					raise
+
+				if (time.time() - start_time) >= self.timeout:
+					raise FileLockException("Timeout occured.")
+				time.sleep(self.delay)
+		self.is_locked = True
+
+	def release(self):
+		""" Get rid of the lock by deleting the lockfile.
+			When working in a `with` statement, this gets automatically
+			called at the end.
+		"""
+		if self.is_locked:
+			os.close(self.fd)
+			os.unlink(self.lockfile)
+			self.is_locked = False
+
+	def __enter__(self):
+		""" Activated when used in the with statement.
+			Should automatically acquire a lock to be used in the with block.
+		"""
+		if not self.is_locked:
+			self.acquire()
+		return self
+
+	def __exit__(self, type, value, traceback):
+		""" Activated at the end of the with statement.
+			It automatically releases the lock if it isn't locked.
+		"""
+		if self.is_locked:
+			self.release()
+
+	def __del__(self):
+		""" Make sure that the FileLock instance doesn't leave a lockfile
+			lying around.
+		"""
+		self.release()
+
+def print_session(session):
+	"""
+	Prints info from the current session.
+
+	WARNING: ONLY FOR DEBUGGING. MAJOR SECURITY RISK!
+	"""
+	print "<h3>Session Data</h3>"
+	print "<dl>"
+	for name in session:
+		print "<dt>%s <i>%s</i></dt>"%(name, type(session[name]))
+		print "<dd>%s</dd>"%repr(session[name])
+	print "</dl>"
+
 
 if __name__ == '__main__':
-	arguments = cgi.FieldStorage()
-	guidingWhereToGo(arguments)
+#    arguments = cgi.FieldStorage()
+	start()
+	global PASSWORD
+	arguments = SESSION.getFormInfo()
+#    if (arguments.has_key("singlesubmit")):
+#        print "Single Submit Detected"
+	if SESSION.isset("passwd"):
+
+		if (SESSION['passwd'] == PASSWORD):
+			guidingWhereToGo(arguments)
+
+		else:
+			destroy()
+			print "Password incorrect, please login again"
+			loginpage()
+	elif (arguments.has_key('login')):
+
+
+		if (arguments['password'].value==PASSWORD):
+			SESSION['passwd']=arguments['password'].value
+			SESSION.set_expires(7)
+			SESSION.output()
+			guidingWhereToGo(arguments)
+
+		else:
+			destroy()
+			print "Password incorrect, please login again"
+			loginpage()
+	else:
+		loginpage()
+
+	# arguments = cgi.FieldStorage()
+	
+	# guidingWhereToGo(arguments)
+	
 
