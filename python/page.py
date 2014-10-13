@@ -1,11 +1,12 @@
 #!/usr/bin/python
-
 import MySQLdb
 import cgi
 import re
 import datetime
 import xmlrpclib
+#import random
 import cgitb
+#import config
 import Cookie
 import os
 import time
@@ -13,9 +14,8 @@ import errno
 import hashlib
 from Cookie import SimpleCookie
 from cPickle import dump, load, HIGHEST_PROTOCOL, dumps, loads
-
 print "Content-type: text/html\n\n"
-
+#cgitb.enable()
 if not "HTTP_COOKIE" in os.environ:
 	os.environ["HTTP_COOKIE"] = ""
 
@@ -182,6 +182,8 @@ def guidingWhereToGo(arguments):
 		generateIndexPage()
 	elif (arguments.has_key("deleteData")):
 		dropall()
+	elif (arguments.has_key("emailsignup")):
+		signuppage()
 	else:
 		generateIndexPage()
 
@@ -220,15 +222,10 @@ def mainnav():
 						<input type="submit" name="singlesubmit" value="Submit a single chat">
 						<!-- <input type="submit" name="multisubmit" value="Submit multiple chats"> -->
 						<input type="submit" name="goindex" value="Return to the Index Page">
-						<input type="submit" name="emailRecent" value="Email Recent Updates">
+						<!-- <input type="submit" name="emailRecent" value="Email Recent Updates"> -->
 						<!-- <input type="submit" name="deleteData" value="delete"> -->
-						<div class="signupForNotifications">
-							<label for="Name">Name:</label>
-							<input type="text" id="Name" name="Name" />
-							<label for="Email">Email: </label>
-							<input type="text" id="Email" name="Email">
-							<input type="submit" name="signup" value="Signup" />
-						</div>
+						<input type="submit" name="emailsignup" value="Get Notification">
+
 
 					</form>
 				</div>
@@ -416,6 +413,24 @@ def generateIndexPage():
 	pagehtml = pagehtml + """</table></body>"""
 
 	print pagehtml
+
+
+def signuppage():
+	pagehtml=pagestart()
+	pagehtml = pagehtml + """
+					<form method="POST" action="./">
+						<div class="signupForNotifications">
+							<label for="Name">Name:</label>
+							<input type="text" id="Name" name="Name" />
+							<label for="Email">Email: </label>
+							<input type="text" id="Email" name="Email">
+							<input type="submit" name="signup" value="Signup" />
+						</div>
+					</form>
+					</body></html>
+					"""
+	print pagehtml
+
 		########################################################################
 		##	This page collects feedback on chats
 		########################################################################
@@ -438,7 +453,7 @@ def votingPage(chatid):
 
 	myquery = "SELECT * FROM interactions WHERE chatid ='%s' ORDER BY line" %(chatid)
 	cur.execute(myquery)
-	
+
 
 	rows = cur.fetchall()
 	cur.close()
@@ -1019,7 +1034,7 @@ class Session(object):
 		self.started = False
 		self._flock = None
 		self.expires = 0 # delete right away
-		
+
 		self.__sid = sid = self.__getsid()
 		self.path = os.path.join(S_DIR, sid+S_EXT)
 
@@ -1046,9 +1061,9 @@ class Session(object):
 	def __getsid(self):
 		"""Get the current session ID or return a new one"""
 		# first, try to load the sid from the GET or POST forms
-		#self.form 
-		if self.form.has_key(S_ID):
-			sid = self.form[S_ID].value
+		form = self.form
+		if form.has_key(S_ID):
+			sid = form[S_ID].value
 			return sid
 
 		# then try to load the sid from the HTTP cookie
@@ -1103,11 +1118,9 @@ class Session(object):
 		self.cookie[S_ID]["expires"] = str(self.expires)
 		self.cookie[S_ID]["version"] = "1"
 
-		return True
-
 	def commit(self):
 		"""Commit the changes to the session"""
-		
+
 		if not self.started:
 			raise NotStarted("Session must be started")
 		with open(self.path, "wb") as f:
@@ -1124,7 +1137,7 @@ class Session(object):
 
 	def output(self):
 		"""Commit changes and send headers."""
-	
+
 		if not self.started:
 			raise NotStarted("Session must be started")
 		self.commit()
@@ -1137,7 +1150,7 @@ class Session(object):
 			self[item] = default
 
 		return self[item]
-		
+
 	def set_expires(self, days):
 		"""Sets the expiration of the cookie"""
 		date = datetime.date.today() + datetime.timedelta(days=days)
@@ -1284,28 +1297,22 @@ def print_session(session):
 if __name__ == '__main__':
 #    arguments = cgi.FieldStorage()
 	start()
-	global PASSWORD
 	arguments = SESSION.getFormInfo()
 #    if (arguments.has_key("singlesubmit")):
 #        print "Single Submit Detected"
 	if SESSION.isset("passwd"):
-
 		if (SESSION['passwd'] == PASSWORD):
 			guidingWhereToGo(arguments)
-
 		else:
 			destroy()
 			print "Password incorrect, please login again"
 			loginpage()
 	elif (arguments.has_key('login')):
-
-
 		if (arguments['password'].value==PASSWORD):
 			SESSION['passwd']=arguments['password'].value
 			SESSION.set_expires(7)
 			SESSION.output()
 			guidingWhereToGo(arguments)
-
 		else:
 			destroy()
 			print "Password incorrect, please login again"
@@ -1314,7 +1321,7 @@ if __name__ == '__main__':
 		loginpage()
 
 	# arguments = cgi.FieldStorage()
-	
+
 	# guidingWhereToGo(arguments)
-	
+
 
